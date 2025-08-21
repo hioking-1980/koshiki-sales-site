@@ -49,15 +49,21 @@ body {
     z-index: -1;
 }
 
-.bg-upper {
-    height: 50%;
-    background-color: var(--color-primary-upper);
+`.bg-upper {
+
+height: 50%;
+
+background-color: #FFFFFF;
+
 }
 
 .bg-lower {
-    height: 50%;
-    background-color: var(--color-primary-lower);
-}
+
+height: 50%;
+
+background-color: #FFFFFF;
+
+}`
 
 .bg-bottle-line {
     position: absolute;
