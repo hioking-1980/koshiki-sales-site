@@ -170,6 +170,7 @@ background-color: #FFFFFF;
 }
 .progress-percent {
     font-weight: 700;
+font-size: 2rem; /* 文字サイズを2倍に */
 }
 
 /* Purchase Section */
