@@ -1,5 +1,5 @@
 // Googleスプレッドシートの「Webに公開」したCSV URL
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQf9Y6-fGvS9F-XfM6vY-eTz6Wf4Jg5n7x5r-jNq3D7J8fP9wA-z2y3x8L/pub?gid=0&single=true&output=csv';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=1242629118&single=true&output=csv';
 
 const elements = {
     offlineBadge: document.getElementById('offline-badge'),
