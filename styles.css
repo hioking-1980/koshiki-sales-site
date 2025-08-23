@@ -68,18 +68,21 @@ body {
 
 /* Header */
 .header {
-    padding: var(--space-8) 0;
+    padding: var(--space-3) 0; /* ロゴの余白を小さく */
     text-align: center;
 }
 .header__logo img {
-    height: 160px; /* 4倍に大きくする */
+    height: 160px;
     width: auto;
+}
+.header__logo {
+    margin-bottom: var(--space-2); /* ロゴとタイトルの余白を小さく */
 }
 
 /* Hero Section */
 .hero {
     text-align: center;
-    padding: var(--space-6) 0;
+    padding: var(--space-4) 0; /* ヒーローセクションの余白を調整 */
 }
 .hero__sub-title {
     font-size: 1rem;
@@ -165,6 +168,21 @@ body {
 .progress-percent {
     font-weight: 700;
     font-size: 2rem; /* 文字サイズを2倍に */
+}
+
+.progress-target-group {
+    text-align: right;
+}
+
+.progress-target {
+    font-size: 2rem;
+    color: var(--color-text-gray);
+}
+
+.progress-unit-note {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-gray);
 }
 
 /* Purchase Section */
