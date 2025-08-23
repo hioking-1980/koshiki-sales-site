@@ -42,12 +42,12 @@ body {
 /* Backgrounds */
 /* Backgrounds */
 .bg-wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .bg-upper {
@@ -61,7 +61,112 @@ body {
 }
 
 /* Container */
-...
+.container {
+    max-width: 1200px;
+    padding: 0 var(--space-3);
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    padding: var(--space-8) 0;
+    text-align: center;
+}
+.header__logo img {
+    height: var(--space-5);
+    width: auto;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: var(--space-6) 0;
+}
+.hero__sub-title {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: var(--space-1);
+}
+.hero__main-title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Progress Section */
+.progress-section {
+    position: relative;
+    padding-bottom: var(--space-8);
+}
+.offline-badge {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background-color: var(--color-text-red);
+    color: white;
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.75rem;
+    border-radius: var(--space-1);
+    z-index: 10;
+}
+.hidden {
+    display: none;
+}
+.progress-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+.progress-last-updated {
+    font-size: 0.875rem;
+    color: var(--color-text-gray);
+    margin-right: var(--space-2);
+}
+.refresh-button {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.progress-bar-group {
+    margin-bottom: var(--space-5);
+}
+.progress-bar-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+}
+.progress-bar-container {
+    width: 100%;
+    height: 40px;
+    background-color: var(--color-progress-container);
+    border-radius: var(--space-1);
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+    border-radius: var(--space-1);
+}
+.monthly-bar {
+    background-color: var(--color-progress-monthly);
+}
+.yearly-bar {
+    background-color: var(--color-progress-yearly);
+}
+.progress-bar-text-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    margin-top: var(--space-2);
+}
+.progress-percent {
+    font-weight: 700;
+    font-size: 2rem; /* 文字サイズを2倍に */
+}
 
 /* Purchase Section */
 .purchase-section {
