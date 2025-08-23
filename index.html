@@ -1,127 +1,94 @@
-// Googleスプレッドシートの「Webに公開」したCSV URL
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=1242629118&single=true&output=csv';
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>こしきブリュワリー | 売上進捗</title>
+    <meta name="description" content="こしきブリュワリーの最新の売上進捗状況をご確認いただけます。">
+    <meta property="og:title" content="こしきブリュワリー | 売上進捗">
+    <meta property="og:description" content="こしきブリュワリーの最新の売上進捗状況をご確認いただけます。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:image" content="https://your-domain.com/assets/images/purchase-thumb.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="bg-wrap">
+        <div class="bg-upper"></div>
+        <div class="bg-lower"></div>
+        <img src="assets/images/bottle-line.png" alt="こしきブリュワリー ボトルのライン" class="bg-bottle-line">
+    </div>
 
-const elements = {
-    offlineBadge: document.getElementById('offline-badge'),
-    lastUpdatedTime: document.getElementById('last-updated-time'),
-    refreshButton: document.getElementById('refresh-button'),
-    yearlyProgress: document.getElementById('yearly-progress'),
-    yearlyPercent: document.getElementById('yearly-percent'),
-    yearlyTarget: document.getElementById('yearly-target'),
-    monthlyProgress: document.getElementById('monthly-progress'),
-    monthlyPercent: document.getElementById('monthly-percent'),
-    monthlyTarget: document.getElementById('monthly-target'), // 追記: 月間目標本数
-    monthlyGrid: document.getElementById('monthly-grid')
-};
+    <div class="container">
+        <header class="header">
+            <h1 class="header__logo">
+                <img src="assets/images/logo.svg" alt="こしきブリュワリー ロゴ">
+            </h1>
+        </header>
 
-// ユーティリティ関数
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-const formatNumber = (num) => new Intl.NumberFormat('ja-JP').format(num);
-const formatPercent = (percent) => `${clamp(percent, 0, 100).toFixed(0)}%`;
+        <main>
+            <section class="hero">
+                <p class="hero__sub-title">こしきブリュワリー</p>
+                <h2 class="hero__main-title">売上進捗</h2>
+            </section>
 
-// CSVをフェッチしてJSONオブジェクトに変換
-const fetchCsvData = async (url) => {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const text = await response.text();
-        const [headerRow, dataRow] = text.split('\n').map(row => row.split(','));
-        const data = {};
-        headerRow.forEach((key, i) => {
-            data[key.trim()] = dataRow[i].trim();
-        });
-        return data;
-    } catch (error) {
-        console.error('Fetch error:', error);
-        return null;
-    }
-};
-
-// ダミーデータ（フェッチ失敗時のフォールバック）
-const dummyData = {
-    total_target: "20000",
-    monthly_overall_percent: "50",
-    yearly_overall_percent: "75",
-    monthly_percent_04: "65", monthly_percent_05: "85", monthly_percent_06: "105",
-    monthly_percent_07: "90", monthly_percent_08: "70", monthly_percent_09: "110",
-    monthly_percent_10: "55", monthly_percent_11: "88", monthly_percent_12: "100",
-    monthly_percent_01: "78", monthly_percent_02: "95", monthly_percent_03: "120"
-};
-
-// データレンダリング
-const render = (data) => {
-    // 年間・月間進捗バー
-    const yearlyPercent = parseFloat(data.yearly_overall_percent);
-    const monthlyPercent = parseFloat(data.monthly_overall_percent);
-    const totalTarget = parseFloat(data.total_target);
-    const monthlyTarget = 1666; // 月間目標本数をハードコード
-
-    // 累積本数を計算（例: 年間目標の達成率から逆算）
-    const totalAchieved = Math.round(totalTarget * (yearlyPercent / 100));
-    const monthlyAchieved = Math.round(monthlyTarget * (monthlyPercent / 100));
-
-    elements.yearlyProgress.style.width = `${clamp(yearlyPercent, 0, 100)}%`;
-    elements.yearlyPercent.textContent = `${formatPercent(yearlyPercent)} (${formatNumber(totalAchieved)}本)`;
-    elements.yearlyTarget.textContent = `${formatNumber(totalTarget)}本`;
-    elements.yearlyProgress.setAttribute('aria-valuenow', yearlyPercent);
-
-    elements.monthlyProgress.style.width = `${clamp(monthlyPercent, 0, 100)}%`;
-    elements.monthlyPercent.textContent = `${formatPercent(monthlyPercent)} (${formatNumber(monthlyAchieved)}本)`;
-    elements.monthlyTarget.textContent = `${formatNumber(monthlyTarget)}本`;
-    elements.monthlyProgress.setAttribute('aria-valuenow', monthlyPercent);
-    
-    // 月別カード
-    const monthNames = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    elements.monthlyGrid.innerHTML = ''; // 一度クリア
-    
-    monthNames.forEach(month => {
-        const monthKey = `monthly_percent_${month}`;
-        if (data[monthKey] !== undefined) {
-            const percent = parseFloat(data[monthKey]);
-            const card = document.createElement('div');
-            card.className = 'monthly-card';
-            
-            let textColorClass = 'monthly-card__percent--gray';
-            if (percent >= 100) {
-                textColorClass = 'monthly-card__percent--red';
-            } else if (percent >= 80) {
-                textColorClass = 'monthly-card__percent--black';
-            }
-            
-            card.innerHTML = `
-                <div class="monthly-card__header">
-                    <div class="monthly-card__month">${parseInt(month, 10)}月</div>
-                    <div class="monthly-card__percent ${textColorClass}">${formatPercent(percent)}</div>
+            <section class="progress-section">
+                <div id="offline-badge" class="offline-badge hidden">オフライン表示</div>
+                <div class="progress-header">
+                    <p class="progress-last-updated">最終更新: <span id="last-updated-time">--:--</span></p>
+                    <button id="refresh-button" class="refresh-button">更新</button>
                 </div>
-                <div class="monthly-card__bar-container">
-                    <div class="monthly-card__bar" style="width: ${clamp(percent, 0, 100)}%;"></div>
+
+                <div class="progress-bar-group">
+                    <div class="progress-bar-label">年間目標本数</div>
+                    <div class="progress-bar-container">
+                        <div id="yearly-progress" class="progress-bar yearly-bar" role="progressbar" aria-label="年間売上進捗" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="progress-bar-text-group">
+                        <span id="yearly-percent" class="progress-percent">0%</span>
+                        <div class="progress-target-group">
+                            <span id="yearly-target" class="progress-target">20,000本</span>
+                            <span class="progress-unit-note">※1本=330ml計算</span>
+                        </div>
+                    </div>
                 </div>
-            `;
-            elements.monthlyGrid.appendChild(card);
-        }
-    });
 
-    // 最終更新時刻を更新
-    const now = new Date();
-    const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    elements.lastUpdatedTime.textContent = formattedTime;
-    elements.offlineBadge.classList.add('hidden');
-};
+                <div class="progress-bar-group">
+                    <div class="progress-bar-label">月間目標本数</div>
+                    <div class="progress-bar-container">
+                        <div id="monthly-progress" class="progress-bar monthly-bar" role="progressbar" aria-label="月間売上進捗" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="progress-bar-text-group">
+                        <span id="monthly-percent" class="progress-percent">0%</span>
+                        <div class="progress-target-group">
+                            <span id="monthly-target" class="progress-target">1,670本</span>
+                            <span class="progress-unit-note">※1本=330ml計算</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-// メインの処理関数
-const init = async () => {
-    let data = await fetchCsvData(SHEET_CSV_URL);
-    if (!data) {
-        data = dummyData;
-        elements.offlineBadge.classList.remove('hidden');
-    }
-    render(data);
-};
+            <section class="purchase-section">
+                <a href="https://09969.jp/products/koshikibrewery-the-fast-from-scratch" target="_blank" rel="noopener noreferrer" class="purchase-link">
+                    <h3 class="purchase-title">購入サイトはこちら</h3>
+                    <img src="assets/images/purchase-thumb.png" alt="こしきブリュワリーのビール購入サイトへのリンク" class="purchase-thumb">
+                </a>
+            </section>
 
-// イベントリスナー
-elements.refreshButton.addEventListener('click', init);
+            <section class="monthly-sales-section">
+                <h3 class="monthly-sales-title">月別売上</h3>
+                <div id="monthly-grid" class="monthly-grid">
+                </div>
+            </section>
+        </main>
 
-// 初期実行
-init();
+        <footer class="footer">
+            <p class="footer-text">&copy; 株式会社AJITO All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
