@@ -10,6 +10,7 @@ const elements = {
     yearlyTarget: document.getElementById('yearly-target'),
     monthlyProgress: document.getElementById('monthly-progress'),
     monthlyPercent: document.getElementById('monthly-percent'),
+    monthlyTarget: document.getElementById('monthly-target'), // 追記: 月間目標本数
     monthlyGrid: document.getElementById('monthly-grid')
 };
 
@@ -55,14 +56,20 @@ const render = (data) => {
     const yearlyPercent = parseFloat(data.yearly_overall_percent);
     const monthlyPercent = parseFloat(data.monthly_overall_percent);
     const totalTarget = parseFloat(data.total_target);
+    const monthlyTarget = 1666; // 月間目標本数をハードコード
+
+    // 累積本数を計算（例: 年間目標の達成率から逆算）
+    const totalAchieved = Math.round(totalTarget * (yearlyPercent / 100));
+    const monthlyAchieved = Math.round(monthlyTarget * (monthlyPercent / 100));
 
     elements.yearlyProgress.style.width = `${clamp(yearlyPercent, 0, 100)}%`;
-    elements.yearlyPercent.textContent = formatPercent(yearlyPercent);
+    elements.yearlyPercent.textContent = `${formatPercent(yearlyPercent)} (${formatNumber(totalAchieved)}本)`;
     elements.yearlyTarget.textContent = `${formatNumber(totalTarget)}本`;
     elements.yearlyProgress.setAttribute('aria-valuenow', yearlyPercent);
 
     elements.monthlyProgress.style.width = `${clamp(monthlyPercent, 0, 100)}%`;
-    elements.monthlyPercent.textContent = formatPercent(monthlyPercent);
+    elements.monthlyPercent.textContent = `${formatPercent(monthlyPercent)} (${formatNumber(monthlyAchieved)}本)`;
+    elements.monthlyTarget.textContent = `${formatNumber(monthlyTarget)}本`;
     elements.monthlyProgress.setAttribute('aria-valuenow', monthlyPercent);
     
     // 月別カード
