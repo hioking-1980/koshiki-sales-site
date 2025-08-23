@@ -40,7 +40,7 @@ const fetchCsvData = async (url) => {
 
 // ダミーデータ（フェッチ失敗時のフォールバック）
 const dummyData = {
-    total_target: "10000000",
+    total_target: "20000",
     monthly_overall_percent: "50",
     yearly_overall_percent: "75",
     monthly_percent_04: "65", monthly_percent_05: "85", monthly_percent_06: "105",
@@ -58,7 +58,7 @@ const render = (data) => {
 
     elements.yearlyProgress.style.width = `${clamp(yearlyPercent, 0, 100)}%`;
     elements.yearlyPercent.textContent = formatPercent(yearlyPercent);
-    elements.yearlyTarget.textContent = `${formatNumber(totalTarget)}円`;
+    elements.yearlyTarget.textContent = `${formatNumber(totalTarget)}本`;
     elements.yearlyProgress.setAttribute('aria-valuenow', yearlyPercent);
 
     elements.monthlyProgress.style.width = `${clamp(monthlyPercent, 0, 100)}%`;
