@@ -72,7 +72,7 @@ body {
     text-align: center;
 }
 .header__logo img {
-    height: var(--space-5);
+    height: 160px; /* 4倍に大きくする */
     width: auto;
 }
 
