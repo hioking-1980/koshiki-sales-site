@@ -1,5 +1,10 @@
 // Googleスプレッドシートの「Webに公開」したCSV URL
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=1242629118&single=true&output=csv';
+const SHEET_SALES_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=1242629118&single=true&output=csv';
+
+// 【追加】取り扱い店舗データのCSV URL
+// 注意: ユーザーから提供されたURL(gid=378996732)をCSV形式に変換したURLを推定して記載しています。
+// スプレッドシートを「ウェブに公開」し、形式を「カンマ区切り形式(.csv)」にして取得したURLに置き換えてください。
+const SHEET_SHOP_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=378996732&single=true&output=csv';
 
 const elements = {
     offlineBadge: document.getElementById('offline-badge'),
@@ -10,8 +15,12 @@ const elements = {
     yearlyTarget: document.getElementById('yearly-target'),
     monthlyProgress: document.getElementById('monthly-progress'),
     monthlyPercent: document.getElementById('monthly-percent'),
-    monthlyTarget: document.getElementById('monthly-target'), // 追記: 月間目標本数
-    monthlyGrid: document.getElementById('monthly-grid')
+    monthlyTarget: document.getElementById('monthly-target'),
+    monthlyGrid: document.getElementById('monthly-grid'),
+    // 【追加】店舗関連の要素
+    currentStores: document.getElementById('current-stores'),
+    targetStores: document.getElementById('target-stores'),
+    storeList: document.getElementById('store-list')
 };
 
 // ユーティリティ関数
@@ -40,25 +49,30 @@ const fetchCsvData = async (url) => {
 };
 
 // ダミーデータ（フェッチ失敗時のフォールバック）
-const dummyData = {
+const dummyDataSales = {
     total_target: "20000",
     monthly_overall_percent: "50",
     yearly_overall_percent: "75",
-    monthly_percent_04: "65", monthly_percent_05: "85", monthly_percent_06: "105",
-    monthly_percent_07: "90", monthly_percent_08: "70", monthly_percent_09: "110",
-    monthly_percent_10: "55", monthly_percent_11: "88", monthly_percent_12: "100",
-    monthly_percent_01: "78", monthly_percent_02: "95", monthly_percent_03: "120"
+    monthly_percent_07: "38", monthly_percent_08: "11", monthly_percent_09: "24",
+    monthly_percent_10: "58", monthly_percent_11: "21", monthly_percent_12: "1",
+    monthly_percent_01: "0" // 1月ダミー
+};
+const dummyDataShop = {
+    total_shops: "7",
+    target_shops: "300",
+    shop_name_list: "46クラフト,物産協会,アンバサド,山下商店,ソーレリーフ,ダーツバーメビウス,ラスタ食堂"
 };
 
 // データレンダリング
-const render = (data) => {
-    // 年間・月間進捗バー
-    const yearlyPercent = parseFloat(data.yearly_overall_percent);
-    const monthlyPercent = parseFloat(data.monthly_overall_percent);
-    const totalTarget = parseFloat(data.total_target);
-    const monthlyTarget = 1666; // 月間目標本数をハードコード
+const render = (salesData, shopData) => {
+    // --- 売上データレンダリング ---
+    
+    // 年間・月間進捗バー (ここでは変更なし)
+    const yearlyPercent = parseFloat(salesData.yearly_overall_percent);
+    const monthlyPercent = parseFloat(salesData.monthly_overall_percent);
+    const totalTarget = parseFloat(salesData.total_target);
+    const monthlyTarget = 1666; 
 
-    // 累積本数を計算（例: 年間目標の達成率から逆算）
     const totalAchieved = Math.round(totalTarget * (yearlyPercent / 100));
     const monthlyAchieved = Math.round(monthlyTarget * (monthlyPercent / 100));
 
@@ -73,13 +87,13 @@ const render = (data) => {
     elements.monthlyProgress.setAttribute('aria-valuenow', monthlyPercent);
     
     // 月別カード
-    const monthNames = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    elements.monthlyGrid.innerHTML = ''; // 一度クリア
+    const monthNames = ["07", "08", "09", "10", "11", "12", "01"]; // 1月を追加
+    elements.monthlyGrid.innerHTML = ''; 
     
     monthNames.forEach(month => {
         const monthKey = `monthly_percent_${month}`;
-        if (data[monthKey] !== undefined) {
-            const percent = parseFloat(data[monthKey]);
+        if (salesData[monthKey] !== undefined) {
+            const percent = parseFloat(salesData[monthKey]);
             const card = document.createElement('div');
             card.className = 'monthly-card';
             
@@ -103,6 +117,17 @@ const render = (data) => {
         }
     });
 
+    // --- 店舗データレンダリング ---
+    const currentShopCount = parseFloat(shopData.total_shops || 0);
+    const targetShopCount = parseFloat(shopData.target_shops || 300);
+    const shopNames = shopData.shop_name_list ? shopData.shop_name_list.split(',').map(name => name.trim()) : [];
+    
+    elements.currentStores.textContent = formatNumber(currentShopCount);
+    elements.targetStores.textContent = formatNumber(targetShopCount);
+
+    elements.storeList.innerHTML = shopNames.map(name => `<span>${name}</span>`).join(' ');
+
+
     // 最終更新時刻を更新
     const now = new Date();
     const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -112,12 +137,28 @@ const render = (data) => {
 
 // メインの処理関数
 const init = async () => {
-    let data = await fetchCsvData(SHEET_CSV_URL);
-    if (!data) {
-        data = dummyData;
+    elements.refreshButton.disabled = true;
+
+    // 複数のデータを並行してフェッチ
+    const [salesData, shopData] = await Promise.all([
+        fetchCsvData(SHEET_SALES_URL),
+        fetchCsvData(SHEET_SHOP_URL)
+    ]);
+
+    let finalSalesData = salesData;
+    let finalShopData = shopData;
+    
+    if (!salesData) {
+        finalSalesData = dummyDataSales;
         elements.offlineBadge.classList.remove('hidden');
     }
-    render(data);
+    if (!shopData) {
+        finalShopData = dummyDataShop;
+        elements.offlineBadge.classList.remove('hidden');
+    }
+
+    render(finalSalesData, finalShopData);
+    elements.refreshButton.disabled = false;
 };
 
 // イベントリスナー
