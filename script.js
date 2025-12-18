@@ -1,10 +1,10 @@
 // Googleスプレッドシートの「Webに公開」したCSV URL
-const SHEET_SALES_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=1242629118&single=true&output=csv';
+const SHEET_SALES_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=0&single=true&output=csv;
 
 // 【追加】取り扱い店舗データのCSV URL
 // 注意: ユーザーから提供されたURL(gid=378996732)をCSV形式に変換したURLを推定して記載しています。
 // スプレッドシートを「ウェブに公開」し、形式を「カンマ区切り形式(.csv)」にして取得したURLに置き換えてください。
-const SHEET_SHOP_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=378996732&single=true&output=csv';
+const SHEET_SHOP_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR42a0Ajt-YBkcx13xy-CbRD5ytwFoAt7V-akyO3Xjojf-VCRUjVF1q5lgo6gUD_IJROeV7nMFvJgXq/pub?gid=378996732&single=true&output=csv;
 
 const elements = {
     offlineBadge: document.getElementById('offline-badge'),
