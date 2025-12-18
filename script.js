@@ -31,21 +31,22 @@ const init = async () => {
         const obj = {};
         headers.forEach((h, i) => obj[h.trim()] = data[i].trim());
 
-        // 進捗レンダリング
+        // 進捗
         elements.yearlyProgress.style.width = obj.yearly_overall_percent + '%';
-        elements.yearlyPercent.textContent = obj.yearly_overall_percent + '%';
-        elements.yearlyTarget.textContent = Number(obj.total_target).toLocaleString();
+        elements.yearlyPercent.textContent = obj.yearly_overall_percent + '% (' + Number(obj.total_target * (obj.yearly_overall_percent/100)).toLocaleString() + '本)';
+        elements.yearlyTarget.textContent = Number(obj.total_target).toLocaleString() + '本';
+        
         elements.monthlyProgress.style.width = obj.monthly_overall_percent + '%';
-        elements.monthlyPercent.textContent = obj.monthly_overall_percent + '%';
+        elements.monthlyPercent.textContent = obj.monthly_overall_percent + '% (' + Number(1666 * (obj.monthly_overall_percent/100)).toLocaleString() + '本)';
 
-        // 2026年分（1月〜）
+        // 2026
         elements.grid2026.innerHTML = '';
         ['01'].forEach(m => {
             const val = obj['monthly_percent_' + m];
             if(val !== undefined) elements.grid2026.appendChild(createCard(m, val));
         });
 
-        // 2025年分（7月〜12月）
+        // 2025
         elements.grid2025.innerHTML = '';
         ['07','08','09','10','11','12'].forEach(m => {
             const val = obj['monthly_percent_' + m];
