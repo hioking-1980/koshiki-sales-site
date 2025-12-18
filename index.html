@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>こしきブリュワリー | 売上進捗</title>
+    <meta name="description" content="こしきブリュワリーの最新の売上進捗状況をご確認いただけます。">
+    <meta property="og:title" content="こしきブリュワリー | 売上進捗">
+    <meta property="og:description" content="こしきブリュワリーの最新の売上進捗状況をご確認いただけます。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:image" content="https://your-domain.com/assets/images/purchase-thumb.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -8,18 +17,72 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main>
+    <div class="bg-wrap">
+        <div class="bg-upper"></div>
+        <div class="bg-lower"></div>
+        <img src="assets/images/bottle-line.png" alt="こしきブリュワリー ボトルのライン" class="bg-bottle-line">
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="header__logo">
+                <img src="assets/images/logo.svg" alt="こしきブリュワリー ロゴ">
+            </h1>
+        </header>
+
+        <main>
+            <section class="hero">
+                <p class="hero__sub-title">こしきブリュワリー</p>
+                <h2 class="hero__main-title">売上進捗</h2>
+            </section>
+
+            <section class="progress-section">
+                <div id="offline-badge" class="offline-badge hidden">オフライン表示</div>
+                <div class="progress-header">
+                    <p class="progress-last-updated">最終更新: <span id="last-updated-time">--:--</span></p>
+                    <button id="refresh-button" class="refresh-button">更新</button>
+                </div>
+
+                <div class="progress-bar-group">
+                    <div class="progress-bar-label">年間目標本数</div>
+                    <div class="progress-bar-container">
+                        <div id="yearly-progress" class="progress-bar yearly-bar" role="progressbar" aria-label="年間売上進捗" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="progress-bar-text-group">
+                        <span id="yearly-percent" class="progress-percent">0%</span>
+                        <div class="progress-target-group">
+                            <span id="yearly-target" class="progress-target">20,000本</span>
+                            <span class="progress-unit-note">※1本=330ml計算</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-bar-group">
+                    <div class="progress-bar-label">月間目標本数</div>
+                    <div class="progress-bar-container">
+                        <div id="monthly-progress" class="progress-bar monthly-bar" role="progressbar" aria-label="月間売上進捗" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="progress-bar-text-group">
+                        <span id="monthly-percent" class="progress-percent">0%</span>
+                        <div class="progress-target-group">
+                            <span id="monthly-target" class="progress-target">1,670本</span>
+                            <span class="progress-unit-note">※1本=330ml計算</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="purchase-section">
+                <a href="https://09969.jp/collections/koshikibrewery-main" target="_blank" rel="noopener noreferrer" class="purchase-link">
+                    <h3 class="purchase-title">購入サイトはこちら</h3>
+                    <img src="assets/images/purchase-thumb.png" alt="こしきブリュワリーのビール購入サイトへのリンク" class="purchase-thumb">
+                </a>
+            </section>
+
             <section class="monthly-sales-section">
                 <h3 class="monthly-sales-title">月別売上</h3>
                 <div id="monthly-grid" class="monthly-grid">
                 </div>
-            </section>
-
-            <section class="store-section">
-                <h3 class="store-title">取り扱い店舗</h3>
-                <p class="store-progress"><span id="current-stores" class="store-count">--</span>店舗 / <span id="target-stores">300</span>店舗</p>
-                <div id="store-list" class="store-list">
-                    </div>
             </section>
         </main>
 
