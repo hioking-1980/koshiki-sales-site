@@ -1,313 +1,150 @@
-/* Custom Properties (CSS Variables) */
 :root {
-    /* Colors */
-    --color-primary-upper: #F0F8FA;
-    --color-primary-lower: #FFF8DC;
-    --color-text-black: #111111;
-    --color-text-gray: #6B7280;
-    --color-text-red: #EF4444;
-    --color-progress-container: #D3D3D3;
-    --color-progress-monthly: #FF0000;
-    --color-progress-yearly: #0033FF;
-    --color-border: #D1D5DB;
-
-    /* Spacing Scale (8px base) */
-    --space-1: 8px;
-    --space-2: 16px;
-    --space-3: 24px;
-    --space-4: 32px;
-    --space-5: 40px;
-    --space-6: 48px;
-    --space-7: 56px;
-    --space-8: 64px;
-    --space-10: 80px;
-    --space-12: 96px;
-}
-
-/* Base Styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    --color-bg: #ffffff;
+    --color-text: #333333;
+    --color-text-red: #e63946;
+    --color-progress-bg: #f0f0f0;
+    --color-progress-fill: #e63946;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-8: 3rem;
+    --space-10: 5rem;
 }
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--color-text-black);
-    position: relative;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    background-color: var(--color-bg);
 }
 
-/* Backgrounds */
-.bg-wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-.bg-upper {
-    height: 50%;
-    background-color: #FFFFFF;
-}
-
-.bg-lower {
-    height: 50%;
-    background-color: #FFFFFF;
-}
-
-/* Container */
 .container {
-    max-width: 1200px;
-    padding: 0 var(--space-3);
+    max-width: 800px;
     margin: 0 auto;
+    padding: var(--space-4);
 }
 
-/* Header */
 .header {
-    padding: var(--space-3) 0; /* ロゴの余白を小さく */
-    text-align: center;
-}
-.header__logo img {
-    height: 160px;
-    width: auto;
-}
-.header__logo {
-    margin-bottom: var(--space-2); /* ロゴとタイトルの余白を小さく */
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: var(--space-5);
 }
 
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: var(--space-4) 0; /* ヒーローセクションの余白を調整 */
-}
-.hero__sub-title {
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: var(--space-1);
-}
-.hero__main-title {
-    font-size: 2rem;
-    font-weight: 700;
-}
-
-/* Progress Section */
-.progress-section {
-    position: relative;
-    padding-bottom: var(--space-8);
-}
-.offline-badge {
-    position: absolute;
-    top: -30px;
-    right: 0;
-    background-color: var(--color-text-red);
-    color: white;
-    padding: var(--space-1) var(--space-2);
-    font-size: 0.75rem;
-    border-radius: var(--space-1);
-    z-index: 10;
-}
-.hidden {
-    display: none;
-}
-.progress-header {
+.header-content {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: var(--space-2);
+    gap: var(--space-4);
 }
-.progress-last-updated {
-    font-size: 0.875rem;
-    color: var(--color-text-gray);
-    margin-right: var(--space-2);
-}
-.refresh-button {
-    background: none;
-    border: 1px solid var(--color-border);
-    border-radius: var(--space-1);
-    padding: var(--space-1) var(--space-2);
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-.progress-bar-group {
-    margin-bottom: var(--space-5);
-}
-.progress-bar-label {
-    font-size: 0.875rem;
-    font-weight: 700;
-    margin-bottom: var(--space-2);
-}
-.progress-bar-container {
+
+.hero-image {
     width: 100%;
-    height: 40px;
-    background-color: var(--color-progress-container);
-    border-radius: var(--space-1);
-    overflow: hidden;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: var(--space-8);
 }
+
+.progress-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+@media (max-width: 600px) {
+    .progress-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.progress-card {
+    padding: var(--space-4);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.progress-container {
+    background-color: var(--color-progress-bg);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: var(--space-4) 0;
+}
+
 .progress-bar {
     height: 100%;
-    transition: width 0.5s ease-in-out;
-    border-radius: var(--space-1);
-}
-.monthly-bar {
-    background-color: var(--color-progress-monthly);
-}
-.yearly-bar {
-    background-color: var(--color-progress-yearly);
-}
-.progress-bar-text-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.875rem;
-    margin-top: var(--space-2);
-}
-.progress-percent {
-    font-weight: 700;
-    font-size: 2rem; /* 文字サイズを2倍に */
+    background-color: var(--color-progress-fill);
+    transition: width 0.3s ease;
 }
 
-.progress-target-group {
-    text-align: right;
-}
-
-.progress-target {
-    font-size: 2rem;
-    color: var(--color-text-gray);
-}
-
-.progress-unit-note {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--color-text-gray);
-}
-
-/* Purchase Section */
 .purchase-section {
-    padding-top: var(--space-6);
-    padding-bottom: var(--space-8);
     text-align: center;
-}
-.purchase-link {
-    display: inline-block;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s;
-}
-.purchase-link:hover {
-    transform: translateY(-4px);
-}
-.purchase-title {
-    font-size: 1.5rem;
-    margin-bottom: var(--space-3);
-}
-.purchase-thumb {
-    max-width: 50%;
-    height: auto;
-    border-radius: var(--space-1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid #000; /* 黒色の枠線を追加 */
-    margin-top: var(--space-2); /* 必要に応じて調整 */
+    margin-bottom: var(--space-10);
 }
 
-/* Monthly Sales Section */
-.monthly-sales-section {
-    padding-bottom: var(--space-10);
+.purchase-image {
+    max-width: 300px;
+    width: 100%;
+    border: 1px solid #eee;
+    border-radius: 8px;
 }
+
 .monthly-sales-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: var(--space-8);
+}
+
+/* 年度別の設定 */
+.year-group {
+    margin-bottom: var(--space-6);
+}
+
+.year-label {
     font-size: 1.5rem;
-    margin-bottom: var(--space-5);
-    text-align: center;
+    margin-bottom: var(--space-4);
+    text-align: left;
 }
+
+.year-divider {
+    border-top: 1px dashed #333;
+    margin: var(--space-8) 0;
+}
+
 .monthly-grid {
-    display: grid;
-    gap: var(--space-3);
-}
-
-/* Monthly Card */
-.monthly-card {
-    border: 1px solid var(--color-border);
-    border-radius: var(--space-1);
-    padding: var(--space-3);
-}
-.monthly-card__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-2);
-}
-.monthly-card__month {
-    font-size: 1.125rem;
-    font-weight: 700;
-}
-.monthly-card__percent {
-    font-weight: 700;
-}
-.monthly-card__percent--red {
-    color: var(--color-text-red);
-}
-.monthly-card__percent--black {
-    color: var(--color-text-black);
-}
-.monthly-card__percent--gray {
-    color: var(--color-text-gray);
-}
-.monthly-card__bar-container {
-    height: 8px;
-    background-color: var(--color-progress-container);
-    border-radius: 4px;
-    overflow: hidden;
-}
-.monthly-card__bar {
-    height: 100%;
-    background-color: var(--color-progress-monthly);
-    transition: width 0.5s ease-in-out;
+    flex-wrap: wrap;
+    gap: var(--space-4);
 }
 
-/* Footer */
-.footer {
-    padding: var(--space-6) 0;
+/* 2025年分を右から左（12月→7月）へ並べる */
+#monthly-grid-2025 {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.monthly-card {
+    flex: 0 0 calc(33.333% - var(--space-4));
+    min-width: 120px;
+    border: 1px solid #eee;
+    padding: var(--space-4);
+    border-radius: 8px;
     text-align: center;
-    font-size: 0.875rem;
-    color: var(--color-text-gray);
+    box-sizing: border-box;
 }
 
-/* Media Queries for Responsive Design */
-/* Tablet */
-@media (min-width: 640px) {
-    .container {
-        padding: 0 var(--space-5);
-    }
-    .hero__main-title {
-        font-size: 2.5rem;
-    }
-    .purchase-title {
-        font-size: 2rem;
-    }
-    .monthly-sales-title {
-        font-size: 2rem;
-    }
-    .monthly-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 480px) {
+    .monthly-card {
+        flex: 0 0 calc(50% - var(--space-4));
     }
 }
 
-/* PC */
-@media (min-width: 1024px) {
-    .container {
-        padding: 0 var(--space-10);
-    }
-    .monthly-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+.footer {
+    text-align: center;
+    padding: var(--space-8) 0;
+    border-top: 1px solid #eee;
 }
 
-/* Large PC */
-@media (min-width: 1200px) {
-    .monthly-grid {
-        grid-template-columns: repeat(6, 1fr);
-    }
-}
+.hidden { display: none; }
